@@ -1,8 +1,7 @@
-import PropTypes from "prop-types"
 import { useNavigate } from "react-router-dom"
 import { Button } from "../ui/button"
 
-export default function NotFound({ isLogged }) {
+export default function LoggedNotFound() {
   const navigate = useNavigate()
   return (
     <div className="h-svh">
@@ -17,17 +16,9 @@ export default function NotFound({ isLogged }) {
           <Button variant="outline" onClick={() => navigate(-1)}>
             Go Back
           </Button>
-          {isLogged ? (
-            <Button onClick={() => navigate("/")}>Back to Home</Button>
-          ) : (
-            <Button onClick={() => navigate("/login")}>Back to Login</Button>
-          )}
+          <Button onClick={() => navigate("/")}>Back to Home</Button>
         </div>
       </div>
     </div>
   )
-}
-
-NotFound.propTypes = {
-  isLogged: PropTypes.bool,
 }
