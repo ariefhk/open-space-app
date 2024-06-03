@@ -21,7 +21,7 @@ export default function ProtectedLayout({ children }) {
         }),
       )
     }
-  }, [dispatch, isSuccess, authUser])
+  }, [dispatch, isSuccess, authUser?.id, authUser?.name, authUser?.photo])
 
   const signOut = useCallback(() => {
     dispatch(clearToken())

@@ -1,10 +1,10 @@
-import { AuthType } from "@/api/api-instance"
 import {
   deleteLocalStorageData,
   getLocalStorageData,
   saveLocalStorageData,
 } from "@/lib/local-storage"
 import { createSlice } from "@reduxjs/toolkit"
+import { AuthType } from "../api-slices/api-slice"
 
 const initialState = {
   token: getLocalStorageData(AuthType.AUTH_LOCALSTORAGE_KEY),

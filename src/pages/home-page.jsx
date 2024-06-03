@@ -35,10 +35,6 @@ function HomePage() {
         }))
       : []
 
-  console.log({
-    talkList,
-  })
-
   return (
     <ProtectedLayout>
       <section className="home-page">

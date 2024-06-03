@@ -1,20 +1,6 @@
-import { AuthType } from "@/api/api-instance"
-import { getLocalStorageData } from "@/lib/local-storage"
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { protectedApiEndpoint } from "./api-slice"
 
-export const userApiSlice = createApi({
-  baseQuery: fetchBaseQuery({
-    reducerPath: "USER_ROUTE",
-    baseUrl: import.meta.env?.VITE_BASE_URL,
-    prepareHeaders: (headers) => {
-      const token = getLocalStorageData(AuthType.AUTH_LOCALSTORAGE_KEY)
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`)
-      }
-      return headers
-    },
-  }),
-  tagTypes: ["USER"],
+export const userApiSlice = protectedApiEndpoint.injectEndpoints({
   endpoints: (builder) => ({
     getProfile: builder.query({
       query: () => ({
@@ -26,6 +12,9 @@ export const userApiSlice = createApi({
         const user = response?.data?.user
         return user
       },
+      providesTags: ({ id }) => {
+        return [{ type: "USER", id }]
+      },
     }),
     getAllUser: builder.query({
       query: () => ({
@@ -35,6 +24,14 @@ export const userApiSlice = createApi({
       transformResponse: (response) => {
         const users = response?.data?.users
         return users
+      },
+      providesTags: (result) => {
+        return result
+          ? [
+              ...result.map(({ id }) => ({ type: "USER", id })),
+              { type: "USER", id: "LIST_OF_USER" },
+            ]
+          : [{ type: "USER", id: "LIST_OF_USER" }]
       },
     }),
   }),

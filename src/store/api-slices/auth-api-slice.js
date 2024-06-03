@@ -1,11 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { apiEndpoint } from "./api-slice"
 
-export const authApiSlice = createApi({
-  reducerPath: "AUTH_ROUTE",
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env?.VITE_BASE_URL,
-  }),
-  tagTypes: ["AUTH"],
+export const authApiSlice = apiEndpoint.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: ({ id, password }) => ({

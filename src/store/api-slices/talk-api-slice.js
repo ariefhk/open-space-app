@@ -1,23 +1,6 @@
-import { AuthType } from "@/api/api-instance"
-import { getLocalStorageData } from "@/lib/local-storage"
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { protectedApiEndpoint } from "./api-slice"
 
-// Utility function to prepare headers
-const prepareAuthHeaders = (headers) => {
-  const token = getLocalStorageData(AuthType.AUTH_LOCALSTORAGE_KEY)
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`)
-  }
-  return headers
-}
-
-export const talkApiSlice = createApi({
-  reducerPath: "TALK_ROUTE",
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env?.VITE_BASE_URL,
-    prepareHeaders: prepareAuthHeaders,
-  }),
-  tagTypes: ["TALK"],
+export const talkApiSlice = protectedApiEndpoint.injectEndpoints({
   endpoints: (builder) => ({
     getAllTalk: builder.query({
       query: () => ({
@@ -94,7 +77,7 @@ export const talkApiSlice = createApi({
         const userId = user?.userData?.id
 
         const patchAllTalkResult = dispatch(
-          talkApiSlice.util.updateQueryData(
+          protectedApiEndpoint.util.updateQueryData(
             "getAllTalk",
             undefined,
             (draft) => {
@@ -123,7 +106,7 @@ export const talkApiSlice = createApi({
 
         // Optimistic update for getTalkDetail
         const patchTalkDetailResult = dispatch(
-          talkApiSlice.util.updateQueryData(
+          protectedApiEndpoint.util.updateQueryData(
             "getTalkDetail",
             { id: talkId },
             (draft) => {
